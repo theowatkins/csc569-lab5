@@ -1,13 +1,18 @@
 #include <stdio.h>
 #include "matrix.h"
 
-#define MSIZE 4
-
 int main(int argc, char *argv[] ) {
-    int matrixA[MSIZE][MSIZE]; \
+    int matrixA[MSIZE][MSIZE];
     int matrixB[MSIZE][MSIZE];
     int result[MSIZE][MSIZE];
     int i,j,k;
+
+    for(i=0;i<MSIZE;i++) {
+        for(j=0;j<MSIZE;j++) {
+            matrixA[i][j] = i+j;
+            matrixB[i][j] = i+j+1;
+        }
+    }
 
     for(i=0;i<MSIZE;i++) {
         for(j=0;j<MSIZE;j++) {

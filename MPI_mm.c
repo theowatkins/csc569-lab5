@@ -5,7 +5,7 @@
 int main(int argc, char *argv[] ) {
     int numprocs, rank, chunk_size, i,j,k;
     int max, mymax,rem;
-    int matrixA[MSIZE][MSIZE]; int matrixB[MSIZE][MSIZE]; 
+    int matrixA[MSIZE][MSIZE]; int matrixB[MSIZE][MSIZE];
     int global_result[MSIZE][MSIZE];
     MPI_Status status;
 
@@ -26,11 +26,6 @@ int main(int argc, char *argv[] ) {
                 matrixB[i][j] = i+j+1;
             }
         }
-
-        printf("Matrix A:\n");
-        print_matrix(matrixA);
-        printf("\nMatrix B:\n");
-        print_matrix(matrixB);
     }
 
     /* Distribute matrixB */
@@ -40,7 +35,7 @@ int main(int argc, char *argv[] ) {
     /* Distribute Matrix */
     /* Assume the matrix is too big to bradcast. Send blocks of rows to each task,
     nrows/nprocs to each one */
-    MPI_Scatter(matrixA,MSIZE*chunk_size,MPI_INT,local_matrix,MSIZE*chunk_size,MPI_INT,0,MPI_COMM_WORLD); 
+    MPI_Scatter(matrixA,MSIZE*chunk_size,MPI_INT,local_matrix,MSIZE*chunk_size,MPI_INT,0,MPI_COMM_WORLD);
 
     /*Each processor has a chunk of rows, now multiply and build a part of the solution vector
     */
@@ -53,31 +48,13 @@ int main(int argc, char *argv[] ) {
         }
     }
 
-    if (rank == 0) {
-        printf("\nProc0 local:");
-        print_matrix(local_matrix);
-        printf("\nProc0 matrixB:\n");
-        print_matrix(matrixB); 
-        printf("\nResult of proc0:\n");
-        print_matrix(result);
-        printf("\n\n");
-    } else if (rank == 1) {
-        printf("\nProc1 local:");
-        print_matrix(local_matrix);
-        printf("\nProc1 matrixB:\n");
-        print_matrix(matrixB);
-        printf("\nResult of proc1:\n");
-        print_matrix(result);
-        printf("\n\n");
-    } else if (rank == 2) {
-        printf("\nProc2 local:");
-        print_matrix(local_matrix);
-        printf("\nProc2 matrixB:\n");
-        print_matrix(matrixB);
-        printf("\nResult of proc2:\n");
-        print_matrix(result);
-        printf("\n\n");
-    }
+    printf("\nProc %sd local:", rank);
+    print_matrix(local_matrix);
+    printf("\nProc%d matrixB:\n", rank);
+    print_matrix(matrixB);
+    printf("\nResult of proc%d:\n", rank);
+    print_matrix(result);
+    printf("\n\n");
 
     /*Send result back to master */
     MPI_Gather(result,MSIZE*chunk_size,MPI_INT,global_result,MSIZE*chunk_size,MPI_INT,
@@ -88,7 +65,7 @@ int main(int argc, char *argv[] ) {
         printf("\nGlobal Result:");
         print_matrix(global_result);
     }
-    
+
     MPI_Finalize();
     return 0;
-} 
+}
