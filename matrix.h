@@ -9,6 +9,6 @@ void print_matrix(int mat[MSIZE][MSIZE]);
 
 void print_row(int res[MSIZE]);
 
-double time_func(void (*foo) ());
+double time_func(void (*foo) (int*, char ***), int *argc, char **argv[]);
 
 #endif

@@ -2,11 +2,7 @@
 #include <stdio.h>
 #include "matrix.h"
 
-int main(int argc, char *argv[] ) {
-    printf("OpenMPI + OPENMP took %.2f seconds to run.", time_function(mpi_mp_mm));
-}
-
-void mpi_mp_mm(){
+void mpi_mp_mm(int *argc, char **argv[]){
     int numprocs, rank, chunk_size, i,j,k;
     int max, mymax,rem;
     int matrixA[MSIZE][MSIZE]; int matrixB[MSIZE][MSIZE];
@@ -14,7 +10,7 @@ void mpi_mp_mm(){
     MPI_Status status;
 
     /* Initialize MPI */
-    MPI_Init( &argc,&argv);
+    MPI_Init(argc,argv);
     MPI_Comm_rank( MPI_COMM_WORLD, &rank);
     MPI_Comm_size( MPI_COMM_WORLD, &numprocs);
     chunk_size = MSIZE/numprocs;
@@ -77,5 +73,9 @@ void mpi_mp_mm(){
     }
 
     MPI_Finalize();
+}
+
+int main(int argc, char *argv[] ) {
+    printf("OpenMPI + OPENMP took %.2f seconds to run.\n", time_func(&mpi_mp_mm, &argc, &argv));
     return 0;
 }

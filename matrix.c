@@ -24,12 +24,12 @@ void print_row(int res[MSIZE]) {
 }
 
 // returns number of seconds given function took to run
-double time_func(void (*foo) ()){
+double time_func(void (*foo) (int*, char ***), int *argc, char **argv[]){
     float diff;
     struct timespec tstart, tend;
 
     clock_gettime(CLOCK_MONOTONIC, &tstart);
-    foo();
+    foo(argc, argv);
     clock_gettime(CLOCK_MONOTONIC, &tend);
 
     diff = ((double) tend.tv_sec + 1.0e-9*tend.tv_nsec) -
