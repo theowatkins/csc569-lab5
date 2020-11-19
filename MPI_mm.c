@@ -1,16 +1,19 @@
 #include "mpi.h"
 #include <stdio.h>
+#include <time.h>
 #include "matrix.h"
 
-void mpi_mm(int *argc, char **argv[]) {
+int main(int argc, char *argv[]) {
     int numprocs, rank, chunk_size, i,j,k;
     int max, mymax,rem;
     int matrixA[MSIZE][MSIZE]; int matrixB[MSIZE][MSIZE];
     int global_result[MSIZE][MSIZE];
+    float diff;
+    struct timespec tstart, tend;
     MPI_Status status;
 
     /* Initialize MPI */
-    MPI_Init(argc, argv);
+    MPI_Init(&argc, &argv);
     MPI_Comm_rank( MPI_COMM_WORLD, &rank);
     MPI_Comm_size( MPI_COMM_WORLD, &numprocs);
     chunk_size = MSIZE/numprocs;
@@ -19,6 +22,7 @@ void mpi_mm(int *argc, char **argv[]) {
     int local_matrix[chunk_size][MSIZE];
 
     if (rank == 0) { /* Only on the root task... */
+        clock_gettime(CLOCK_MONOTONIC, &tstart);
         /* Initialize Matrix and Vector */
         for(i=0;i<MSIZE;i++) {
             for(j=0;j<MSIZE;j++) {
@@ -48,13 +52,13 @@ void mpi_mm(int *argc, char **argv[]) {
         }
     }
 
-    printf("\nProc %d local:", rank);
-    print_matrix(local_matrix);
-    printf("\nProc%d matrixB:\n", rank);
-    print_matrix(matrixB);
-    printf("\nResult of proc%d:\n", rank);
-    print_matrix(result);
-    printf("\n\n");
+    // printf("\nProc %d local:", rank);
+    // print_matrix(local_matrix);
+    // printf("\nProc%d matrixB:\n", rank);
+    // print_matrix(matrixB);
+    // printf("\nResult of proc%d:\n", rank);
+    // print_matrix(result);
+    // printf("\n\n");
 
     /*Send result back to master */
     MPI_Gather(result,MSIZE*chunk_size,MPI_INT,global_result,MSIZE*chunk_size,MPI_INT,
@@ -62,14 +66,14 @@ void mpi_mm(int *argc, char **argv[]) {
 
     /*Display result */
     if(rank==0) {
-        printf("\nGlobal Result:");
-        print_matrix(global_result);
+        clock_gettime(CLOCK_MONOTONIC, &tend);
+        diff = ((double) tend.tv_sec + 1.0e-9*tend.tv_nsec) -
+                      ((double)tstart.tv_sec + 1.0e-9*tstart.tv_nsec);
+        printf("OpenMPI took %.2f seconds to run.\n", diff);
+        // printf("\nGlobal Result:");
+        // print_matrix(global_result);
     }
 
     MPI_Finalize();
-}
-
-int main(int argc, char *argv[] ) {
-    printf("OpenMPI took %.2f seconds to run.\n", time_func(&mpi_mm, &argc, &argv));
     return 0;
 }

@@ -22,11 +22,9 @@ void seq_mm(int *argc, char **argv[]){
             }
         }
     }
-
-    print_matrix(result);
 }
 
 int main(int argc, char *argv[] ) {
-    printf("OpenMP took %.2f seconds to run.\n", time_func(&seq_mm, &argc, &argv));
+    printf("Sequential took %.2f seconds to run.\n", time_func(&seq_mm));
     return 0;
 }
