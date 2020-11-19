@@ -52,7 +52,7 @@ void mpi_mm() {
         }
     }
 
-    printf("\nProc %sd local:", rank);
+    printf("\nProc %d local:", rank);
     print_matrix(local_matrix);
     printf("\nProc%d matrixB:\n", rank);
     print_matrix(matrixB);

@@ -27,4 +27,6 @@ void seq_mm(){
         }
     }
 
+    print_matrix(result);
+
 }

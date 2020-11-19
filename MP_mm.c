@@ -27,4 +27,7 @@ void mp_mm(){
             }
         }
     }
+
+    print_matrix(result);
+
 }
