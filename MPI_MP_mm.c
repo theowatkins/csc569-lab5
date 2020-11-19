@@ -3,6 +3,10 @@
 #include "matrix.h"
 
 int main(int argc, char *argv[] ) {
+    printf("OpenMPI + OPENMP took %.2f seconds to run.", time_function(mpi_mp_mm));
+}
+
+void mpi_mp_mm(){
     int numprocs, rank, chunk_size, i,j,k;
     int max, mymax,rem;
     int matrixA[MSIZE][MSIZE]; int matrixB[MSIZE][MSIZE];

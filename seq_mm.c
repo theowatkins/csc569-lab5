@@ -2,6 +2,10 @@
 #include "matrix.h"
 
 int main(int argc, char *argv[] ) {
+    printf("Sequential took %.2f seconds to run.", time_function(seq_mm));
+}
+
+void seq_mm(){
     int matrixA[MSIZE][MSIZE];
     int matrixB[MSIZE][MSIZE];
     int result[MSIZE][MSIZE];

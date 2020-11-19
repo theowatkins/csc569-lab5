@@ -2,6 +2,10 @@
 #include "matrix.h"
 
 int main(int argc, char *argv[] ) {
+    printf("OpenMP took %.2f seconds to run.", time_function(mp_mm));
+}
+
+void mp_mm(){
     int matrixA[MSIZE][MSIZE];
     int matrixB[MSIZE][MSIZE];
     int result[MSIZE][MSIZE];
@@ -23,5 +27,4 @@ int main(int argc, char *argv[] ) {
             }
         }
     }
-
 }
