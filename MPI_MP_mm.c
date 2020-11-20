@@ -48,7 +48,7 @@ int main(int argc, char *argv[]){
 
     /*Each processor has a chunk of rows, now multiply and build a part of the solution vector
     */
-    # pragma omp for
+    #pragma omp parallel for collapse(2) private(i, j, k) shared(matrixB, result, local_matrix)
     for(i=0;i<chunk_size;i++) {
         for(j=0;j<MSIZE;j++) {
             result[i][j] = 0;

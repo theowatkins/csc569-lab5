@@ -14,7 +14,7 @@ void mp_mm(int *argc, char **argv[]){
         }
     }
 
-    # pragma omp for
+    #pragma omp parallel for collapse(2) private(i, j, k) shared(matrixA, matrixB, result)
     for(i=0;i<MSIZE;i++) {
         for(j=0;j<MSIZE;j++) {
             result[i][j] = 0;
@@ -23,6 +23,8 @@ void mp_mm(int *argc, char **argv[]){
             }
         }
     }
+
+    // print_matrix(result);
 }
 
 int main(int argc, char *argv[] ) {
